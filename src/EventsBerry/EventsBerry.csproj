@@ -9,12 +9,18 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
-    <PackageReference Include="SquirrelFramework" Version="1.0.15" />
+    <PackageReference Include="SquirrelFramework" Version="1.0.15.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="C:\Users\hqi\.nuget\packages\squirrelframework\1.0.15.1\contentFiles\any\netstandard2.0\mongodbsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="C:\Users\hqi\.nuget\packages\squirrelframework\1.0.15\contentFiles\any\netstandard2.0\mongodbsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="mongodbsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
