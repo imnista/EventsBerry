@@ -19,4 +19,11 @@ namespace EventsBerry.Model
         public DateTime CreatedTime { get; set; }
         public List<CheckIn> CheckInList { get; set; }
     }
+
+    public class CheckIn
+    {
+        public string ParticipatorId { get; set; }
+        public string ParticipatorDisplayName { get; set; }
+        public DateTime CheckInTime { get; set; }
+    }
 }

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EventsBerry.Model;
+﻿using EventsBerry.Model;
 using EventsBerry.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace EventsBerry.Controllers
 {
@@ -19,24 +16,26 @@ namespace EventsBerry.Controllers
         [HttpGet]
         public dynamic Get()
         {
-            var query = 
-                from u in eventRepository.AsQueryable()
-                orderby u.CreatedTime descending
-                select new
-                {
-                    Id = u.Id,
-                    OrganizerId = u.OrganizerId,
-                    OrganizerDisplayName = u.OrganizerDisplayName,
-                    TimeRange = u.TimeRange,
-                    Topic = u.Topic,
-                    Description = u.Description
-                };
-            return query.ToList();
+            //var query =
+            //    from u in eventRepository.AsQueryable()
+            //    orderby u.CreatedTime descending
+            //    select new
+            //    {
+            //        Id = u.Id,
+            //        OrganizerId = u.OrganizerId,
+            //        OrganizerDisplayName = u.OrganizerDisplayName,
+            //        TimeRange = u.TimeRange,
+            //        Topic = u.Topic,
+            //        Description = u.Description,
+            //    };
+            //return query.ToList();
+
+            return eventRepository.GetAll();
         }
 
-        // GET: api/Event/5
+        // GET: api/Event/5xxx
         [HttpGet("{id}", Name = "Get")]
-        public dynamic Get(string id)
+        public Event Get(string id)
         {
             return eventRepository.Get(id);
         }
@@ -49,16 +48,17 @@ namespace EventsBerry.Controllers
             eventRepository.AddAsync(value);
         }
 
-        //// PUT: api/Event/5
+        //// PUT: api/Event/5xxx
         //[HttpPut("{id}")]
         //public void Put(int id, [FromBody] string value)
         //{
         //}
 
-        //// DELETE: api/ApiWithActions/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public void Delete(string id)
+        {
+            eventRepository.DeleteAsync(id);
+        }
     }
 }

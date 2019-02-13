@@ -1,0 +1,126 @@
+﻿@page
+@using System.Text
+@using EventsBerry.Repository
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>主页</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid #333333;
+            padding: 3px 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>活动记录</h1>
+    <h2>全部活动</h2>
+
+    @* 方式 1 *@
+    <input id="refresh-1" type="button" value="刷新 1" />
+
+    <table>
+        <thead>
+            <tr>
+                <td>Topic</td>
+                <td>Organizer</td>
+                <td>Description</td>
+                <td>Time Range</td>
+                <td>Participators</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var repo = new EventRepository();
+            }
+
+            @foreach (var e in repo.GetAll())
+            {
+                var participators = new StringBuilder();
+                foreach (var p in e.CheckInList)
+                {
+                    participators.AppendJoin(", ", p.ParticipatorDisplayName);
+                }
+
+                <tr>
+                    <td>@e.Topic</td>
+                    <td>@e.OrganizerDisplayName</td>
+                    <td>@e.Description</td>
+                    <td>@e.TimeRange</td>
+                    <td>@participators.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script>
+        var refreshButton1 = document.querySelector('#refresh-1');
+        refreshButton1.onclick = function () {
+            window.location.reload();
+        }
+    </script>
+
+    <br />
+    <br />
+
+
+    @* 方式 2 *@
+    <input id="refresh-2" type="button" value="刷新 2" />
+    <table>
+        <thead>
+            <tr>
+                <td>Topic</td>
+                <td>Organizer</td>
+                <td>Description</td>
+                <td>Time Range</td>
+                <td>Participators</td>
+            </tr>
+        </thead>
+        <tbody id="event-list"></tbody>
+    </table>
+
+    <script>
+
+        var refreshButton2 = document.querySelector('#refresh-2');
+        refreshButton2.onclick = function () {
+
+            fetch('/api/event').then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                console.log(data);
+                var participators = "";
+                var html = "";
+
+                data.forEach((d) => {
+
+                    d.checkInList.forEach((e) => {
+                        participators += (e.participatorDisplayName + ", ");
+                    });
+
+                    html += `<tr><td>${d.topic}</td><td>${d.organizerDisplayName}</td><td>${d.description}</td><td>${d.timeRange}</td><td>${participators}</td></tr>`;
+
+                });
+
+                var eventList = document.querySelector('#event-list');
+                eventList.innerHTML = html;
+
+            }).catch(function (e) {
+
+                console.log("Oops, error" + e);
+            });
+
+        }
+    </script>
+</body>
+</html>
