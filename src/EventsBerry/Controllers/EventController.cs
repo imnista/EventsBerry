@@ -42,10 +42,11 @@ namespace EventsBerry.Controllers
 
         // POST: api/Event
         [HttpPost]
-        public void Post([FromBody] Event value)
+        public ActionResult Post(Event value) // [FromForm]
         {
             value.CreatedTime = DateTime.UtcNow;
-            eventRepository.AddAsync(value);
+            eventRepository.Add(value);
+            return this.Ok("Create new event successfully");
         }
 
         //// PUT: api/Event/5xxx

@@ -1,0 +1,121 @@
+﻿@page
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>新建活动</title>
+    <style>
+        label {
+            margin: 0 20px 10px 0;
+            width: 150px;
+            text-align: right;
+            display: inline-block;
+        }
+
+        textarea {
+            margin: 0 0 10px 0;
+            width: 400px;
+            height: 100px;
+            vertical-align: top;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>新建活动</h1>
+
+    <form id="create-form" method="post" action="/api/event">
+        <label for="input-topic">主题</label>
+        <input id="input-topic" name="topic" />
+        <br />
+
+        <label for="input-organizer-id">组织人 ID</label>
+        <input id="input-organizer-id" name="organizerId" />
+        <br />
+
+        <label for="input-organizer-display-name">组织人显示昵称</label>
+        <input id="input-organizer-display-name" name="organizerDisplayName" />
+        <br />
+
+        <label for="input-description">描述</label>
+        <textarea id="input-description" name="description"></textarea>
+        <br />
+
+        <label for="input-time-range">活动时间</label>
+        <input id="input-time-range" name="timeRange" type="datetime-local" />
+
+        <br />
+        <input type="submit" value="创建" />
+        @* Convert HTML Form data to JSON *@
+        @*<input id="submit" type="button" value="创建" />*@
+    </form>
+
+
+    @*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.1.min.js"></script>*@
+    <script>
+
+        var submitButton = document.querySelector('#submit');
+        submitButton.onclick = function () {
+
+            var formObject = document.querySelector('#create-form');
+            var jsonObject = convertFormDataToJson(new FormData(formObject));
+
+            // ES6
+            fetch('/api/event',
+                {
+                    method: "POST",
+                    body: jsonObject,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+
+                    console.log(data);
+                    alert("提交成功！");
+                    window.location = "/home/index";
+
+                }).catch(function (ex) {
+                    console.log("Oops, error" + ex);
+                });
+
+            // jQuery
+            // http://www.w3school.com.cn/jquery/ajax_ajax.asp
+            //$.ajax({
+            //    url: "/api/event",
+            //    type: "POST",
+            //    contentType: "application/json",
+            //    dataType: "json",
+            //    data: $("#create-form").serialize(),
+            //    success: function (result) {
+
+            //        console.log(result);
+            //        alert("提交成功！");
+            //        window.location = "/home/index";
+
+            //    },
+            //    error: function(ex) {
+            //        console.log("Oops, error" + ex);
+            //    }
+            //});
+        }
+
+        var convertFormDataToJson = function (formData) {
+            var objData = {};
+
+            formData.forEach((value, key) => objData[key] = value);
+
+            return JSON.stringify(objData);
+        };
+
+    </script>
+</body>
+</html>

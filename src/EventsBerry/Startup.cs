@@ -48,7 +48,15 @@ namespace EventsBerry
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "EventsBerry");
             });
 
-            app.UseMvc();
+            // How to add default home page
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}");
+            });
+
+            app.UseDefaultFiles();
         }
     }
 }

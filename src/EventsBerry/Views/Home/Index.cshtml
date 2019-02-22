@@ -20,24 +20,58 @@
             border: 1px solid #333333;
             padding: 3px 5px;
         }
+
+        .customize-button {
+            border: 1px solid #00bfff;
+            background: #008b8b;
+            color: #ffffff;
+            padding: 10px;
+            display: inline-block;
+            -ms-border-radius: 10px;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        .customize-button:hover {
+                background: #00abab;
+            }
     </style>
 </head>
 <body>
 
     <h1>活动记录</h1>
-    <h2>全部活动</h2>
+
+    @* SPA / New Page *@
+    @*https://stackoverflow.com/questions/4563235/where-does-asp-net-virtual-path-resolve-the-tilde*@
+    <a class="customize-button" href="~/home/create">+ 新建活动 1</a>
+
+    @Html.ActionLink("+ 新建活动 2", "Create", "Home", null, new { @class = "customize-button" })
+
+    <input id="add" type="button" value="+ 新建活动 3" />
+
+    <script>
+        var addButton = document.querySelector('#add');
+        addButton.onclick = function () {
+            window.location = "/home/create";
+        }
+    </script>
+
+
+
+
 
     @* 方式 1 *@
+    <h2>全部活动 Way 1</h2>
     <input id="refresh-1" type="button" value="刷新 1" />
 
     <table>
         <thead>
             <tr>
-                <td>Topic</td>
-                <td>Organizer</td>
-                <td>Description</td>
-                <td>Time Range</td>
-                <td>Participators</td>
+                <td>主题</td>
+                <td>组织人</td>
+                <td>描述</td>
+                <td>活动时间</td>
+                <td>已签到的参与者</td>
             </tr>
         </thead>
         <tbody>
@@ -74,17 +108,17 @@
     <br />
     <br />
 
-
     @* 方式 2 *@
+    <h2>全部活动 Way 2</h2>
     <input id="refresh-2" type="button" value="刷新 2" />
     <table>
         <thead>
             <tr>
-                <td>Topic</td>
-                <td>Organizer</td>
-                <td>Description</td>
-                <td>Time Range</td>
-                <td>Participators</td>
+                <td>主题</td>
+                <td>组织人</td>
+                <td>描述</td>
+                <td>活动时间</td>
+                <td>已签到的参与者</td>
             </tr>
         </thead>
         <tbody id="event-list"></tbody>
@@ -95,7 +129,9 @@
         var refreshButton2 = document.querySelector('#refresh-2');
         refreshButton2.onclick = function () {
 
-            fetch('/api/event').then(function (response) {
+            fetch('/api/event', {
+                method: "GET"
+            }).then(function (response) {
                 return response.json();
             }).then(function (data) {
                 console.log(data);
